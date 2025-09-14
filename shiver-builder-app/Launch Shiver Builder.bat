@@ -1,0 +1,3 @@
+@echo off
+echo Launching Planet Shark Shiver Builder...
+start "" "%~dp0\index.html"

@@ -1,0 +1,9 @@
+# Ignore temporary files and directories
+temp/
+temp_package/
+*.zip
+*.lnk
+
+# Ignore system files
+.DS_Store
+Thumbs.db
