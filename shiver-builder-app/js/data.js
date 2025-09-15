@@ -287,3 +287,80 @@ const SPECIAL_RULES = {
     "STAPLE": "Any Sharkanoid hit by this weapon does not get to take the move action next round.",
     "TRANSPORT": "Any Sharkanoid hit by this weapon may be immediately placed anywhere within 7\" and within line of sight of the attacker."
 };
+
+// Planet Shark Honors Table
+const HONORS = {
+    // For Veterans, roll 1d6
+    1: {
+        name: "Shark Fin Award",
+        effect: "+2 to Health",
+        modifiers: { health: 2 },
+        points: 0
+    },
+    2: {
+        name: "Bite Mark Medal",
+        effect: "+1 to Range Attack",
+        modifiers: { rangeAttack: 1 },
+        points: 0
+    },
+    3: {
+        name: "Valor Teeth",
+        effect: "+1 to Melee Attack",
+        modifiers: { meleeAttack: 1 },
+        points: 0
+    },
+    4: {
+        name: "Swim Speed Citation",
+        effect: "+1 to Speed",
+        modifiers: { speed: 1 },
+        points: 0
+    },
+    5: {
+        name: "Purple Fin",
+        effect: "+1 to Armor",
+        modifiers: { armor: 1 },
+        points: 0
+    },
+    6: {
+        name: "Heroic Honor",
+        effect: "+1 to Armor and +1 to Health",
+        modifiers: { armor: 1, health: 1 },
+        points: 0
+    },
+    // Additional purchasable honors
+    "tactical_award": {
+        name: "Tactical Award",
+        effect: "+1 to Actions",
+        modifiers: { actions: 1 },
+        points: 15,
+        purchasable: true
+    },
+    "combat_medal": {
+        name: "Combat Medal",
+        effect: "+1 to Melee and +1 to Range Attack",
+        modifiers: { meleeAttack: 1, rangeAttack: 1 },
+        points: 10,
+        purchasable: true
+    },
+    "defensive_citation": {
+        name: "Defensive Citation",
+        effect: "+2 to Armor",
+        modifiers: { armor: 2 },
+        points: 10,
+        purchasable: true
+    },
+    "supply_badge": {
+        name: "Supply Badge",
+        effect: "+2 to Supply",
+        modifiers: { supply: 2 },
+        points: 10,
+        purchasable: true
+    },
+    "endurance_commendation": {
+        name: "Endurance Commendation",
+        effect: "+5 to Health",
+        modifiers: { health: 5 },
+        points: 10,
+        purchasable: true
+    }
+};

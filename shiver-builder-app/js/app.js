@@ -5,7 +5,43 @@ class ShiverBuilder {
         this.totalPoints = 100;
         this.pointsUsed = 0;
         this.sharkanoids = [];
-        this.selectedSharkanoidIndex = -1;
+        this.selectedSh        // Render selected extras
+        this.renderSelectedItems(
+            sharkanoid.extras,
+            'selected-extras',
+            (extra) => `${extra.name} (${extra.pointCost} points)`,
+            (index) => this.removeExtra(index)
+        );
+        
+        // Render selected honors
+        this.renderSelectedItems(
+            sharkanoid.honors,
+            'selected-honors',
+            (honor) => `${honor.name} (${honor.points} points): ${honor.effect}`,
+            (index) => this.removeHonor(index)
+        );
+        
+        // Show/hide honor roll section for Veterans
+        const honorRollSection = document.getElementById('honor-roll-result');
+        if (sharkanoid.template === 'veteran') {
+            honorRollSection.style.display = 'block';
+            
+            // Display current honor roll if exists
+            if (sharkanoid.honorRoll) {
+                document.getElementById('detail-honor-roll').textContent = 
+                    `${HONORS[sharkanoid.honorRoll].name}: ${HONORS[sharkanoid.honorRoll].effect}`;
+            } else {
+                document.getElementById('detail-honor-roll').textContent = "Not rolled yet";
+            }
+            
+            // Enable roll button only if no honor roll yet
+            document.getElementById('roll-honor-btn').disabled = !!sharkanoid.honorRoll;
+        } else {
+            honorRollSection.style.display = 'none';
+        }
+        
+        // Setup honor-related event listeners
+        this.setupHonorsEventListeners();dIndex = -1;
 
         this.init();
     }
@@ -71,6 +107,16 @@ class ShiverBuilder {
             
             this.generatePrintSummary();
         });
+
+        // Save button
+        document.getElementById('save-btn').addEventListener('click', () => {
+            this.saveShiverToLocalStorage();
+        });
+        
+        // Load button
+        document.getElementById('load-btn').addEventListener('click', () => {
+            this.loadShiverFromLocalStorage();
+        });
     }
 
     renderSharkanoidTemplates() {
@@ -100,6 +146,8 @@ class ShiverBuilder {
             weapons: [],
             equipment: [],
             extras: [],
+            honors: [],
+            honorRoll: null,
             isLeader: this.sharkanoids.length === 0, // First added is leader by default
             availableSupply: template.supply,
             usedSupply: 0
@@ -213,6 +261,20 @@ class ShiverBuilder {
                 option.value = index;
                 option.textContent = `${extra.name} (${extra.pointCost} points)`;
                 extrasSelect.appendChild(option);
+            }
+        });
+        
+        // Update honors selection dropdown
+        const honorsSelect = document.getElementById('honors-select');
+        honorsSelect.innerHTML = '<option value="">-- Select Honor --</option>';
+        
+        // Add only purchasable honors to the dropdown
+        Object.entries(HONORS).forEach(([key, honor]) => {
+            if (honor.purchasable && this.pointsUsed + honor.points <= this.totalPoints) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = `${honor.name} (${honor.points} pts)`;
+                honorsSelect.appendChild(option);
             }
         });
         
@@ -801,6 +863,25 @@ class ShiverBuilder {
                 html += `</div>`;
             }
             
+            // Add honors
+            if (sharkanoid.honors && sharkanoid.honors.length > 0) {
+                html += `
+                    <div class="items-section">
+                        <div class="section-header">Honors:</div>
+                `;
+                
+                sharkanoid.honors.forEach(honor => {
+                    html += `
+                        <div class="item">
+                            <span class="item-name">${honor.name}</span>${honor.points ? ` (P:${honor.points})` : ''}
+                            <div class="item-description">${honor.effect}</div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+            
             html += `</div>`;
         });
         
@@ -864,6 +945,11 @@ class ShiverBuilder {
             sharkanoid.equipment.forEach(equipment => {
                 sharkanoid.usedSupply += equipment.supplyCost;
             });
+            
+            // Initialize honors array if not present
+            if (!sharkanoid.honors) {
+                sharkanoid.honors = [];
+            }
         });
         
         // Update UI
@@ -876,6 +962,211 @@ class ShiverBuilder {
         }
         
         alert("Shiver imported successfully!");
+    }
+
+    // Honor-related methods
+    setupHonorsEventListeners() {
+        // Honor selection and addition
+        document.getElementById('add-honor-btn').addEventListener('click', () => {
+            const honorSelect = document.getElementById('honors-select');
+            if (honorSelect.value) {
+                this.addHonor(honorSelect.value);
+            }
+        });
+
+        // Honor roll for Veterans
+        document.getElementById('roll-honor-btn').addEventListener('click', () => {
+            this.rollHonorForVeteran();
+        });
+    }
+
+    addHonor(honorKey) {
+        if (this.selectedSharkanoidIndex < 0) return;
+        
+        const honor = HONORS[honorKey];
+        const sharkanoid = this.sharkanoids[this.selectedSharkanoidIndex];
+        
+        // Check if the honor is already added
+        if (sharkanoid.honors.some(h => h.name === honor.name)) {
+            alert(`This Sharkanoid already has the ${honor.name} honor!`);
+            return;
+        }
+        
+        // Check if we have enough points
+        if (this.pointsUsed + honor.points > this.totalPoints) {
+            alert(`Not enough points remaining! You need ${honor.points} points but only have ${this.totalPoints - this.pointsUsed} remaining.`);
+            return;
+        }
+        
+        // Add the honor
+        sharkanoid.honors.push({...honor});
+        this.pointsUsed += honor.points;
+        
+        // Update UI
+        this.updatePointsDisplay();
+        this.renderSharkanoidDetails(sharkanoid);
+    }
+
+    removeHonor(index) {
+        if (this.selectedSharkanoidIndex < 0) return;
+        
+        const sharkanoid = this.sharkanoids[this.selectedSharkanoidIndex];
+        if (index < 0 || index >= sharkanoid.honors.length) return;
+        
+        // Refund points
+        const honor = sharkanoid.honors[index];
+        this.pointsUsed -= honor.points;
+        
+        // Remove the honor
+        sharkanoid.honors.splice(index, 1);
+        
+        // Update UI
+        this.updatePointsDisplay();
+        this.renderSharkanoidDetails(sharkanoid);
+    }
+
+    rollHonorForVeteran() {
+        if (this.selectedSharkanoidIndex < 0) return;
+        
+        const sharkanoid = this.sharkanoids[this.selectedSharkanoidIndex];
+        
+        // Only Veterans can roll for honors
+        if (sharkanoid.template !== 'veteran') {
+            alert('Only Veterans can roll for honors!');
+            return;
+        }
+        
+        // Check if already rolled
+        if (sharkanoid.honorRoll) {
+            alert('This Veteran has already rolled for an honor!');
+            return;
+        }
+        
+        // Roll 1d6
+        const roll = Math.floor(Math.random() * 6) + 1;
+        sharkanoid.honorRoll = roll;
+        
+        // Add the rolled honor
+        const honor = HONORS[roll];
+        sharkanoid.honors.push({...honor});
+        
+        // Update UI
+        this.renderSharkanoidDetails(sharkanoid);
+        
+        // Show result
+        alert(`Rolled a ${roll}: ${honor.name} - ${honor.effect}`);
+    }
+
+    // Save/Load methods
+    saveShiverToLocalStorage() {
+        if (this.sharkanoids.length === 0) {
+            alert("You need to create at least one Sharkanoid before saving!");
+            return;
+        }
+        
+        if (!this.shiverName) {
+            alert("Please give your Shiver a name before saving!");
+            document.getElementById('shiver-name-input').focus();
+            return;
+        }
+        
+        // Check if we have a leader
+        if (!this.sharkanoids.some(s => s.isLeader)) {
+            alert("You must nominate a leader for your Shiver!");
+            return;
+        }
+        
+        // Get saved shivers or initialize
+        let savedShivers = JSON.parse(localStorage.getItem('planet_shark_shivers') || '{}');
+        
+        // Add/update this shiver
+        savedShivers[this.shiverName] = {
+            shiverName: this.shiverName,
+            pointsUsed: this.pointsUsed,
+            totalPoints: this.totalPoints,
+            sharkanoids: this.sharkanoids,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Save back to localStorage
+        localStorage.setItem('planet_shark_shivers', JSON.stringify(savedShivers));
+        
+        alert(`Shiver "${this.shiverName}" saved successfully!`);
+    }
+
+    loadShiverFromLocalStorage() {
+        // Get saved shivers
+        const savedShivers = JSON.parse(localStorage.getItem('planet_shark_shivers') || '{}');
+        
+        // Check if we have any saves
+        if (Object.keys(savedShivers).length === 0) {
+            alert("No saved Shivers found!");
+            return;
+        }
+        
+        // Create overlay and dialog
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        document.body.appendChild(overlay);
+        
+        const dialog = document.createElement('div');
+        dialog.className = 'saved-shivers';
+        dialog.innerHTML = `<h2>Saved Shivers</h2>`;
+        
+        // Add each saved shiver
+        Object.entries(savedShivers).forEach(([name, data]) => {
+            const date = new Date(data.timestamp);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            
+            const item = document.createElement('div');
+            item.className = 'saved-shiver-item';
+            item.innerHTML = `
+                <div class="shiver-info">
+                    <div>${name}</div>
+                    <div class="shiver-date">${formattedDate}</div>
+                </div>
+                <div class="shiver-actions">
+                    <button class="load-btn">Load</button>
+                    <button class="delete-btn">Delete</button>
+                </div>
+            `;
+            
+            // Load button
+            item.querySelector('.load-btn').addEventListener('click', () => {
+                this.importShiver(data);
+                document.body.removeChild(overlay);
+                document.body.removeChild(dialog);
+            });
+            
+            // Delete button
+            item.querySelector('.delete-btn').addEventListener('click', () => {
+                if (confirm(`Are you sure you want to delete the Shiver "${name}"?`)) {
+                    delete savedShivers[name];
+                    localStorage.setItem('planet_shark_shivers', JSON.stringify(savedShivers));
+                    dialog.removeChild(item);
+                    
+                    // If no more shivers, close dialog
+                    if (Object.keys(savedShivers).length === 0) {
+                        document.body.removeChild(overlay);
+                        document.body.removeChild(dialog);
+                        alert("No more saved Shivers!");
+                    }
+                }
+            });
+            
+            dialog.appendChild(item);
+        });
+        
+        // Close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.addEventListener('click', () => {
+            document.body.removeChild(overlay);
+            document.body.removeChild(dialog);
+        });
+        dialog.appendChild(closeButton);
+        
+        document.body.appendChild(dialog);
     }
 }
 

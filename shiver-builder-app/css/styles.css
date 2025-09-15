@@ -393,3 +393,80 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* Honor styles */
+.honors-section {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: var(--primary);
+    border-radius: 5px;
+    border-left: 3px solid var(--warning);
+}
+
+.honor-roll-result {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: var(--primary);
+    border-radius: 5px;
+    border-left: 3px solid var(--warning);
+}
+
+#roll-honor-btn {
+    background-color: var(--warning);
+    margin-left: 5px;
+}
+
+.honor-item {
+    border-left: 3px solid var(--warning);
+}
+
+/* Save styles */
+#save-btn, #load-btn {
+    background-color: var(--success);
+}
+
+.saved-shivers {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.saved-shivers h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    color: var(--accent);
+}
+
+.saved-shiver-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--primary);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.saved-shiver-item button {
+    margin-left: 10px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}

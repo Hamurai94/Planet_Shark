@@ -22,6 +22,8 @@
                 <div class="import-export">
                     <button id="export-btn">Export Shiver</button>
                     <button id="import-btn">Import Shiver</button>
+                    <button id="save-btn">Save Shiver</button>
+                    <button id="load-btn">Load Shiver</button>
                     <button id="print-btn">Print Summary</button>
                     <input type="file" id="import-file" accept=".json">
                 </div>
@@ -95,6 +97,11 @@
                     <div class="section-title">Special Ability</div>
                     <div id="detail-special">None</div>
                 </div>
+                
+                <div id="honor-roll-result" class="honor-roll-result" style="display: none;">
+                    <div class="section-title">Honor Roll Result</div>
+                    <div id="detail-honor-roll">None</div>
+                </div>
 
                 <div class="weapons-section">
                     <div class="section-title">Weapons</div>
@@ -132,6 +139,20 @@
                     </div>
                     <div class="items-list" id="selected-extras">
                         <div class="none-selected">No extras selected</div>
+                    </div>
+                </div>
+
+                <div class="honors-section">
+                    <div class="section-title">Honors</div>
+                    <div class="selector-row">
+                        <select id="honors-select">
+                            <option value="">-- Select Honor --</option>
+                        </select>
+                        <button id="add-honor-btn">Add</button>
+                        <button id="roll-honor-btn" title="Veterans can roll for a free Honor">Roll Honor (Veterans)</button>
+                    </div>
+                    <div class="items-list" id="selected-honors">
+                        <div class="none-selected">No honors selected</div>
                     </div>
                 </div>
             </div>
