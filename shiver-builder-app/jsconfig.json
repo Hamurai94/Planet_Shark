@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "none",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noEmit": true,
+    "lib": ["es2017", "dom"],
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "js/data.js",
+    "js/simple_data.js"
+  ]
+}

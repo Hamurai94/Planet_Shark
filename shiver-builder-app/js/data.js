@@ -1,5 +1,7 @@
 // Planet Shark Shiver Builder - Game Data
-const SHARKANOID_TEMPLATES = {
+const GameData = {
+// Main game data object to prevent redeclaration conflicts
+SHARKANOID_TEMPLATES: {
     pup: {
         name: "PUP",
         baseSize: "25 MM",

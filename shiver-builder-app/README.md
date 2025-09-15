@@ -15,11 +15,16 @@ No installation required! The application runs completely in your web browser wi
 2. Select a Sharkanoid template from the dropdown and click "Add" to add it to your Shiver.
 3. Click on a Sharkanoid in the list to select it and view/edit its details.
 4. Add weapons, equipment, and extras to your Sharkanoid using the dropdown menus.
-5. Nominate a leader for your Shiver by checking the "Leader" checkbox.
-6. Continue adding Sharkanoids until you've used up to 100 points.
-7. Use the Export button to save your Shiver as a JSON file.
-8. Use the Import button to load a previously saved Shiver.
-9. Use the Print Summary button to create a printable reference sheet.
+5. Add honors to your Sharkanoid for stat bonuses.
+6. Nominate a leader for your Shiver by checking the "Leader" checkbox.
+7. Continue adding Sharkanoids until you've used up to 100 points.
+8. Use the Save button to save your Shiver to your browser's local storage.
+9. Use the Load button to retrieve previously saved Shivers.
+10. Use the Export button to save your Shiver as a JSON file for sharing.
+11. Use the Import button to load a previously saved Shiver from a JSON file.
+12. Use the Print Summary button to create a printable reference sheet.
+
+For detailed rules and documentation, please see the [RULES.md](RULES.md) file.
 
 ## Sharkanoid Templates
 

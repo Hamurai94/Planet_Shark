@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Data.js</title>
+</head>
+<body>
+    <h1>Testing data.js</h1>
+    <div id="output"></div>
+
+    <script src="js/data.js"></script>
+    <script>
+        try {
+            const output = document.getElementById('output');
+            
+            if (typeof SHARKANOID_TEMPLATES !== 'undefined') {
+                output.innerHTML = '<p style="color: green;">SHARKANOID_TEMPLATES is defined!</p>';
+                output.innerHTML += '<p>Templates found:</p><ul>';
+                
+                for (const key in SHARKANOID_TEMPLATES) {
+                    output.innerHTML += `<li>${key}: ${SHARKANOID_TEMPLATES[key].name}</li>`;
+                }
+                
+                output.innerHTML += '</ul>';
+            } else {
+                output.innerHTML = '<p style="color: red;">SHARKANOID_TEMPLATES is NOT defined!</p>';
+            }
+        } catch (e) {
+            document.getElementById('output').innerHTML = '<p style="color: red;">Error: ' + e.message + '</p>';
+        }
+    </script>
+</body>
+</html>

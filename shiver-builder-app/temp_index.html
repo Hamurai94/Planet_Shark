@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Shark - Shiver Builder</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Planet Shark - Shiver Builder</h1>
+            <div class="header-info">
+                <div class="points-info">
+                    <div>Points Used: <span id="points-used">0</span>/100</div>
+                    <div>Points Remaining: <span id="points-remaining">100</span></div>
+                </div>
+                <div class="shiver-name">
+                    <label for="shiver-name-input">Shiver Name:</label>
+                    <input type="text" id="shiver-name-input" placeholder="Enter your Shiver name">
+                </div>
+                <div class="import-export">
+                    <button id="export-btn">Export Shiver</button>
+                    <button id="import-btn">Import Shiver</button>
+                    <button id="save-btn">Save Shiver</button>
+                    <button id="load-btn">Load Shiver</button>
+                    <button id="print-btn">Print Summary</button>
+                    <input type="file" id="import-file" accept=".json">
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sharkanoid-selector">
+                <div class="selector-header">
+                    <h2>Sharkanoids</h2>
+                </div>
+                <div class="template-selector">
+                    <select id="template-select">
+                        <option value="">-- Select Sharka --</option>
+                    </select>
+                    <button id="add-sharkanoid-btn">Add</button>
+                </div>
+                <div id="sharkanoid-list">
+                    <!-- Sharkanoids will be listed here -->
+                </div>
+            </div>
+
+            <div id="sharkanoid-details" class="sharkanoid-details" style="display: none;">
+                <!-- Sharkanoid details content -->
+            </div>
+        </div>
+
+        <footer>
+            <div class="rules-reference">
+                <div class="section-title">Special Rules Reference</div>
+                <div class="rules-grid">
+                    <!-- Rules content -->
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
