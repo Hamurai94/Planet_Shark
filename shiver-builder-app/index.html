@@ -25,6 +25,7 @@
                     <button id="save-btn">Save Shiver</button>
                     <button id="load-btn">Load Shiver</button>
                     <button id="print-btn">Print Summary</button>
+                    <button id="campaign-btn">Campaign Manager</button>
                     <input type="file" id="import-file" accept=".json">
                 </div>
             </div>
@@ -164,6 +165,116 @@
                     </div>
                     <div class="items-list" id="selected-injuries">
                         <div class="none-selected">No injuries recorded</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaign Modal -->
+        <div id="campaign-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Campaign Manager</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="campaign-tabs">
+                        <button class="tab-button active" data-tab="overview">Overview</button>
+                        <button class="tab-button" data-tab="battles">Battle History</button>
+                        <button class="tab-button" data-tab="add-battle">Add Battle</button>
+                        <button class="tab-button" data-tab="sharkanoid-stats">Sharkanoid Stats</button>
+                    </div>
+
+                    <!-- Campaign Overview Tab -->
+                    <div id="overview-tab" class="tab-content active">
+                        <div class="campaign-info">
+                            <div class="info-row">
+                                <label for="campaign-name">Campaign Name:</label>
+                                <input type="text" id="campaign-name" placeholder="Enter campaign name">
+                            </div>
+                            <div class="info-row">
+                                <label for="campaign-description">Description:</label>
+                                <textarea id="campaign-description" placeholder="Campaign description"></textarea>
+                            </div>
+                        </div>
+                        <div class="campaign-stats">
+                            <div class="stat-box">
+                                <div class="stat-number" id="total-battles">0</div>
+                                <div class="stat-label">Total Battles</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number" id="victories">0</div>
+                                <div class="stat-label">Victories</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number" id="defeats">0</div>
+                                <div class="stat-label">Defeats</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number" id="draws">0</div>
+                                <div class="stat-label">Draws</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number" id="total-experience">0</div>
+                                <div class="stat-label">Total XP</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Battle History Tab -->
+                    <div id="battles-tab" class="tab-content">
+                        <div id="battle-list">
+                            <div class="no-battles">No battles recorded yet</div>
+                        </div>
+                    </div>
+
+                    <!-- Add Battle Tab -->
+                    <div id="add-battle-tab" class="tab-content">
+                        <div class="battle-form">
+                            <div class="form-row">
+                                <label for="battle-name">Battle Name:</label>
+                                <input type="text" id="battle-name" placeholder="Enter battle name">
+                            </div>
+                            <div class="form-row">
+                                <label for="battle-opponent">Opponent:</label>
+                                <input type="text" id="battle-opponent" placeholder="Enemy shiver name">
+                            </div>
+                            <div class="form-row">
+                                <label for="battle-scenario">Scenario:</label>
+                                <input type="text" id="battle-scenario" placeholder="Scenario played">
+                            </div>
+                            <div class="form-row">
+                                <label for="battle-result">Result:</label>
+                                <select id="battle-result">
+                                    <option value="">-- Select Result --</option>
+                                    <option value="victory">Victory</option>
+                                    <option value="defeat">Defeat</option>
+                                    <option value="draw">Draw</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label for="battle-experience">Experience Gained:</label>
+                                <input type="number" id="battle-experience" min="0" value="0">
+                            </div>
+                            <div class="form-row">
+                                <label for="battle-notes">Notes:</label>
+                                <textarea id="battle-notes" placeholder="Battle notes and memorable moments"></textarea>
+                            </div>
+                            <div class="sharkanoid-participation">
+                                <h3>Sharkanoid Participation</h3>
+                                <div id="participation-list">
+                                    <!-- Will be populated with current shiver -->
+                                </div>
+                            </div>
+                            <button id="save-battle-btn">Save Battle</button>
+                        </div>
+                    </div>
+
+                    <!-- Sharkanoid Stats Tab -->
+                    <div id="sharkanoid-stats-tab" class="tab-content">
+                        <div id="campaign-sharkanoid-list">
+                            <div class="no-stats">No campaign data available</div>
+                        </div>
                     </div>
                 </div>
             </div>
